@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Sadie.API" Version="1.0.0" />
+      <PackageReference Include="Sadie.Networking.Writers" Version="1.0.0" />
+    </ItemGroup>
+
 </Project>
