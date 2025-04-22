@@ -24,16 +24,17 @@ jobs:
       - name: Get current version
         id: curr_version
         run: |
-          version=$(xmllint --xpath "string(//Version)" "${{ steps.find_csproj.outputs.file }}" || echo "0.0.0")
+          version=$(grep -oP '<Version>\K[^<]+' "${{ steps.find_csproj.outputs.file }}" || echo "0.0.0")
           echo "version=$version" >> $GITHUB_OUTPUT
 
       - name: Get previous version
         id: prev_version
         run: |
           git checkout HEAD^ || exit 0
-          version=$(xmllint --xpath "string(//Version)" "${{ steps.find_csproj.outputs.file }}" 2>/dev/null || echo "0.0.0")
+          version=$(grep -oP '<Version>\K[^<]+' "${{ steps.find_csproj.outputs.file }}" || echo "0.0.0")
           echo "prev_version=$version" >> $GITHUB_OUTPUT
           git checkout -
+
 
       - name: Check if version changed
         id: check_version
