@@ -1,4 +1,4 @@
-name: release-version
+name: Release on Version Change
 
 on:
   push:
@@ -8,15 +8,19 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-
     permissions:
-      contents: write
+      contents: write  # Required to create a GitHub release and upload assets
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.x'  # or whatever version you're targeting
 
       - name: Find .csproj file
         id: find_csproj
@@ -38,7 +42,6 @@ jobs:
           echo "prev_version=$version" >> $GITHUB_OUTPUT
           git checkout -
 
-
       - name: Check if version changed
         id: check_version
         run: |
@@ -48,6 +51,18 @@ jobs:
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Build the project
+        if: steps.check_version.outputs.changed == 'true'
+        run: |
+          dotnet build "${{ steps.find_csproj.outputs.file }}" -c Release
+
+      - name: Find built DLL
+        id: find_dll
+        if: steps.check_version.outputs.changed == 'true'
+        run: |
+          dll=$(find . -type f -name "*.dll" -path "*bin/Release/*" | grep -v "ref/" | head -n 1)
+          echo "dll=$dll" >> $GITHUB_OUTPUT
+
       - name: Create GitHub Release
         if: steps.check_version.outputs.changed == 'true'
         uses: ncipollo/release-action@v1
@@ -55,3 +70,4 @@ jobs:
           tag: v${{ steps.curr_version.outputs.version }}
           name: Release v${{ steps.curr_version.outputs.version }}
           generateReleaseNotes: true
+          artifacts: ${{ steps.find_dll.outputs.dll }}
