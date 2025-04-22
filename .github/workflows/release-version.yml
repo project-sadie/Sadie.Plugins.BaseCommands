@@ -1,0 +1,53 @@
+name: Release on Version Change
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Find .csproj file
+        id: find_csproj
+        run: |
+          file=$(find . -name "*.csproj" | head -n 1)
+          echo "file=$file" >> $GITHUB_OUTPUT
+
+      - name: Get current version
+        id: curr_version
+        run: |
+          version=$(xmllint --xpath "string(//Version)" "${{ steps.find_csproj.outputs.file }}" || echo "0.0.0")
+          echo "version=$version" >> $GITHUB_OUTPUT
+
+      - name: Get previous version
+        id: prev_version
+        run: |
+          git checkout HEAD^ || exit 0
+          version=$(xmllint --xpath "string(//Version)" "${{ steps.find_csproj.outputs.file }}" 2>/dev/null || echo "0.0.0")
+          echo "prev_version=$version" >> $GITHUB_OUTPUT
+          git checkout -
+
+      - name: Check if version changed
+        id: check_version
+        run: |
+          if [ "${{ steps.curr_version.outputs.version }}" != "${{ steps.prev_version.outputs.prev_version }}" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create GitHub Release
+        if: steps.check_version.outputs.changed == 'true'
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v${{ steps.curr_version.outputs.version }}
+          name: Release v${{ steps.curr_version.outputs.version }}
+          generateReleaseNotes: true
