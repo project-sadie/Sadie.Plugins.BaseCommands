@@ -9,7 +9,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # Required to create a GitHub release and upload assets
+      contents: write
 
     steps:
       - name: Checkout code
@@ -20,7 +20,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.x'  # or whatever version you're targeting
+          dotnet-version: '9.x'
 
       - name: Find .csproj file
         id: find_csproj
