@@ -1,5 +1,7 @@
 using Sadie.API;
+using Sadie.API.Game.Rooms.Chat.Commands;
 using Sadie.API.Game.Rooms.Users;
+using Sadie.Enums.Miscellaneous;
 using Sadie.Enums.Unsorted;
 using Sadie.Networking.Writers.Rooms.Users;
 
@@ -10,7 +12,7 @@ public class MoonWalkCommand : AbstractRoomChatCommand
     public override string Trigger => "moonwalk";
     public override string Description => "Your avatar falls asleep";
     
-    public override async Task ExecuteAsync(IRoomUser user, IEnumerable<string> parameters)
+    public override async Task ExecuteAsync(IRoomUser user, IRoomChatCommandParameterReader reader)
     {
         user.MoonWalking = !user.MoonWalking;
         

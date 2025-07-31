@@ -1,5 +1,6 @@
 using Sadie.API;
 using Sadie.API.Game.Players;
+using Sadie.API.Game.Rooms.Chat.Commands;
 using Sadie.API.Game.Rooms.Users;
 using Sadie.Networking.Writers.Players;
 
@@ -12,7 +13,7 @@ public class ShutdownCommand(
     public override string Trigger => "shutdown";
     public override string Description => "Shuts down the server";
 
-    public override async Task ExecuteAsync(IRoomUser user, IEnumerable<string> parameters)
+    public override async Task ExecuteAsync(IRoomUser user, IRoomChatCommandParameterReader reader)
     {
         const string shutdownMessage = "The server is about to shut down...";
 

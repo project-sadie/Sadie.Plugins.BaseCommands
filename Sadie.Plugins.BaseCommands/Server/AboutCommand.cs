@@ -3,6 +3,7 @@ using System.Text;
 using Sadie.API;
 using Sadie.API.Game.Players;
 using Sadie.API.Game.Rooms;
+using Sadie.API.Game.Rooms.Chat.Commands;
 using Sadie.API.Game.Rooms.Users;
 using Sadie.Networking.Writers.Players;
 using Sadie.Shared;
@@ -16,7 +17,7 @@ public class AboutCommand(
     public override string Trigger => "about";
     public override string Description => "Provides information about the server";
 
-    public override async Task ExecuteAsync(IRoomUser user, IEnumerable<string> parameters)
+    public override async Task ExecuteAsync(IRoomUser user, IRoomChatCommandParameterReader reader)
     {
         var version = GlobalState.Version;
         var message = new StringBuilder();

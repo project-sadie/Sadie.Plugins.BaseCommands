@@ -1,4 +1,5 @@
 using Sadie.API;
+using Sadie.API.Game.Rooms.Chat.Commands;
 using Sadie.API.Game.Rooms.Users;
 using Sadie.Enums.Game.Rooms.Users;
 
@@ -9,7 +10,7 @@ public class SitCommand : AbstractRoomChatCommand
     public override string Trigger => "sit";
     public override string Description => "Makes your avatar sit down";
     
-    public override Task ExecuteAsync(IRoomUser user, IEnumerable<string> parameters)
+    public override Task ExecuteAsync(IRoomUser user, IRoomChatCommandParameterReader reader)
     {
         if (user.StatusMap.ContainsKey(RoomUserStatus.Sit))
         {
