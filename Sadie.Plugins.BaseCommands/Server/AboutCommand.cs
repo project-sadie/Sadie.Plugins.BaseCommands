@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Text;
 using Sadie.API;
+using Sadie.API.Game.Locale;
 using Sadie.API.Game.Players;
 using Sadie.API.Game.Rooms;
 using Sadie.API.Game.Rooms.Chat.Commands;
@@ -12,10 +13,11 @@ namespace Sadie.Plugins.BaseCommands.Server;
 
 public class AboutCommand(
     IRoomRepository roomRepository, 
-    IPlayerRepository playerRepository) : AbstractRoomChatCommand
+    IPlayerRepository playerRepository,
+    ILocaleService localeService) : AbstractRoomChatCommand
 {
     public override string Trigger => "about";
-    public override string Description => "Provides information about the server";
+    public override string Description => localeService["cmd.about.describe"];
 
     public override async Task ExecuteAsync(IRoomUser user, IRoomChatCommandParameterReader reader)
     {
