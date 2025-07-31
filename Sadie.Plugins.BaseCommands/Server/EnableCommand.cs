@@ -16,6 +16,7 @@ public class EnableCommand(ILocaleService localeService) : AbstractRoomChatComma
     {
         if (!reader.GetInt(out var enableId))
         {
+            await user.SendWhisperAsync(localeService["cmd.enable.noId"]);
             return;
         }
         
