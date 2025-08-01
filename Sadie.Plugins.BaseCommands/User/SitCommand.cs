@@ -16,7 +16,7 @@ public class SitCommand : AbstractRoomChatCommand
             return Task.CompletedTask;
         }
         
-        user.AddStatus(RoomUserStatus.Sit, "0");
+        user.AddStatus(RoomUserStatus.Sit, "0.5");
         return Task.CompletedTask;
     }
 }
