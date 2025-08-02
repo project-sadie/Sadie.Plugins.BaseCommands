@@ -1,16 +1,18 @@
 using Sadie.API;
+using Sadie.API.Game.Locale;
+using Sadie.API.Game.Rooms.Chat.Commands;
 using Sadie.API.Game.Rooms.Users;
-using Sadie.Enums.Unsorted;
+using Sadie.Enums.Miscellaneous;
 using Sadie.Networking.Writers.Rooms.Users;
 
 namespace Sadie.Plugins.BaseCommands.User;
 
-public class MoonWalkCommand : AbstractRoomChatCommand
+public class MoonWalkCommand(ILocaleService localeService) : AbstractRoomChatCommand
 {
     public override string Trigger => "moonwalk";
-    public override string Description => "Your avatar falls asleep";
+    public override string Description => localeService["cmd.moonWalk.describe"];
     
-    public override async Task ExecuteAsync(IRoomUser user, IEnumerable<string> parameters)
+    public override async Task ExecuteAsync(IRoomUser user, IRoomChatCommandParameterReader reader)
     {
         user.MoonWalking = !user.MoonWalking;
         
