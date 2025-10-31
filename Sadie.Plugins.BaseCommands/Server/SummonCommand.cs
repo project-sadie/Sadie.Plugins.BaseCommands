@@ -9,7 +9,7 @@ namespace Sadie.Plugins.BaseCommands.Server;
 public class SummonCommand(ILocaleService locale) : AbstractRoomChatCommand
 {
     public override string Trigger => "summon";
-    public override string Description => locale["cmd.summon."];
+    public override string Description => locale["cmd.summon.describe"];
 
     public override async Task ExecuteAsync(IRoomUser user, IRoomChatCommandParameterReader reader)
     {

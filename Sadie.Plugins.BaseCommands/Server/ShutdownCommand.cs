@@ -24,7 +24,7 @@ public class ShutdownCommand(
             Message = shutdownMessage
         });
 
-        await Task.Delay(3000);
+        await Task.Delay(5000);
         await server.DisposeAsync();
     }
 
