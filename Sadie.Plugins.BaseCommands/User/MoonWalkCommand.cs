@@ -1,8 +1,8 @@
 using Sadie.API;
-using Sadie.API.Game.Locale;
-using Sadie.API.Game.Rooms.Chat.Commands;
-using Sadie.API.Game.Rooms.Users;
-using Sadie.Enums.Miscellaneous;
+using Sadie.API.Interfaces.Game.Locale;
+using Sadie.API.Interfaces.Game.Rooms.Chat.Commands;
+using Sadie.API.Interfaces.Game.Rooms.Users;
+using Sadie.Core.Enums.Miscellaneous;
 using Sadie.Networking.Writers.Rooms.Users;
 
 namespace Sadie.Plugins.BaseCommands.User;
@@ -20,7 +20,7 @@ public class MoonWalkCommand(ILocaleService localeService) : AbstractRoomChatCom
         
         await user.Room.UserRepository.BroadcastDataAsync(new RoomUserEffectWriter
         {
-            UserId = user.Player.Id,
+            UserId = user.Player.Player.Id,
             EffectId = effectId,
             DelayMs = 0
         });
