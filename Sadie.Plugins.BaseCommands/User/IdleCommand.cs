@@ -1,7 +1,7 @@
 using Sadie.API;
-using Sadie.API.Game.Locale;
-using Sadie.API.Game.Rooms.Chat.Commands;
-using Sadie.API.Game.Rooms.Users;
+using Sadie.API.Interfaces.Game.Locale;
+using Sadie.API.Interfaces.Game.Rooms.Chat.Commands;
+using Sadie.API.Interfaces.Game.Rooms.Users;
 using Sadie.Networking.Writers.Rooms.Users;
 
 namespace Sadie.Plugins.BaseCommands.User;
@@ -15,7 +15,7 @@ public class IdleCommand(ILocaleService localeService) : AbstractRoomChatCommand
     {
         await user.Room.UserRepository.BroadcastDataAsync(new RoomUserIdleWriter
         {
-            UserId = user.Player.Id,
+            UserId = user.Player.Player.Id,
             IsIdle = true
         });
     }
