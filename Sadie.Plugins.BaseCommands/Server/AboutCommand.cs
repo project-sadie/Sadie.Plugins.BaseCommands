@@ -1,13 +1,13 @@
 using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 using Sadie.API;
-using Sadie.API.Game.Locale;
-using Sadie.API.Game.Players;
-using Sadie.API.Game.Rooms;
-using Sadie.API.Game.Rooms.Chat.Commands;
-using Sadie.API.Game.Rooms.Users;
+using Sadie.API.Interfaces.Game.Locale;
+using Sadie.API.Interfaces.Game.Players;
+using Sadie.API.Interfaces.Game.Rooms;
+using Sadie.API.Interfaces.Game.Rooms.Chat.Commands;
+using Sadie.API.Interfaces.Game.Rooms.Users;
 using Sadie.Networking.Writers.Players;
-using Sadie.Shared;
 
 namespace Sadie.Plugins.BaseCommands.Server;
 
@@ -21,7 +21,12 @@ public class AboutCommand(
 
     public override async Task ExecuteAsync(IRoomUser user, IRoomChatCommandParameterReader reader)
     {
-        var version = GlobalState.Version;
+        var assembly = AppDomain.CurrentDomain
+            .GetAssemblies()
+            .FirstOrDefault(a => a.GetName().Name == "Sadie.Server");
+
+        var version = assembly?.GetName().Version;
+        
         var message = new StringBuilder();
         var memoryMb = Process.GetCurrentProcess().PrivateMemorySize64 / (1024 * 1024);
 
@@ -33,8 +38,9 @@ public class AboutCommand(
         message.AppendLine("");
         message.AppendLine("Credits:");
         message.AppendLine("Habtard - Lead Developer");
-        message.AppendLine("Damien - Developer");
-        message.AppendLine("Lucas - Creative Director");
+        message.AppendLine("");
+        message.AppendLine("Honorable Mentions");
+        message.AppendLine("Damien - Encryption");
         message.AppendLine("");
         
         await user.NetworkObject.WriteToStreamAsync(new PlayerAlertWriter

@@ -1,8 +1,8 @@
 using Sadie.API;
-using Sadie.API.Game.Locale;
-using Sadie.API.Game.Players;
-using Sadie.API.Game.Rooms.Chat.Commands;
-using Sadie.API.Game.Rooms.Users;
+using Sadie.API.Interfaces.Game.Locale;
+using Sadie.API.Interfaces.Game.Players;
+using Sadie.API.Interfaces.Game.Rooms.Chat.Commands;
+using Sadie.API.Interfaces.Game.Rooms.Users;
 using Sadie.Networking.Writers.Players;
 
 namespace Sadie.Plugins.BaseCommands.Server;
@@ -21,7 +21,7 @@ public class HotelAlertCommand(IPlayerRepository playerRepository,
             return;
         }
         
-        var author = user.Player.Username;
+        var author = user.Player.Player.Username;
         
         await playerRepository.BroadcastDataAsync(
             new PlayerAlertWriter
